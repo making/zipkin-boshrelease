@@ -1,0 +1,4 @@
+---
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=zipkin/properties/zipkin/heap_size?
+  value: ((zipkin_heap_size))
