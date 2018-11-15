@@ -19,6 +19,17 @@ bosh -d zipkin deploy manifest/zipkin.yml \
   --no-redact
 ```
 
+You can link an exinsting elasticsearch in other deployments (ex. [elastic-stack-bosh-deployment](https://github.com/bosh-elastic-stack/elastic-stack-bosh-deployment)) with [cross-deployment linking](https://bosh.io/docs/links/#cross-deployment) instead of provisioning a new instance:
+
+```
+bosh -d zipkin deploy manifest/zipkin.yml \
+  -l manifest/versions.yml \
+  -o manifest/ops-files/consume-elasticsearch-from-different-deployment.yml \
+  -v elasticsearch-from=elasticsearch-master \
+  -v elasticsearch-deployment=elastic-stack \
+  --no-redact
+```
+
 ###  Enable Kibana
 
 ```

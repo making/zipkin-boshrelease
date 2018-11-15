@@ -1,0 +1,11 @@
+---
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=zipkin/properties/zipkin?/storage_type
+  value: elasticsearch
+
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=zipkin/consumes?
+  value: 
+    elasticsearch:
+      from: ((elasticsearch-from))
+      deployment: ((elasticsearch-deployment))
