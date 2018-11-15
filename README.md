@@ -90,7 +90,7 @@ bosh -d zipkin deploy manifest/zipkin.yml \
 
 Elasticseach and Kibana are colocated at the Zipkin server.
 
-## Deplopment
+## Development
 
 ```
 bosh sync-blobs
