@@ -3,15 +3,17 @@ name: zipkin
 
 releases:
 - name: zipkin
-  version: latest
+  version: ((zipkin_version))
+  url: https://github.com/making/zipkin-boshrelease/releases/download/((zipkin_version))/zipkin-boshrelease-((zipkin_version)).tgz
+  sha1: ((zipkin_sha1))
 - name: openjdk
-  version: 8.0.1
-  url: https://github.com/making/openjdk-boshrelease/releases/download/8.0.1/openjdk-boshrelease-8.0.1.tgz
-  sha1: d02566fb6d974de4b60bf44dc21e56422c7da3fd
+  version: ((openjdk_version))
+  url: https://github.com/making/openjdk-boshrelease/releases/download/((openjdk_version))/openjdk-boshrelease-((openjdk_version)).tgz
+  sha1: ((openjdk_sha1))
 - name: bpm
-  version: 0.13.0
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bpm-release?v=0.13.0
-  sha1: 4b6ebfdaa467c04855528172b099e565d679e0f5
+  version: ((bpm_version))
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bpm-release?v=((bpm_version))
+  sha1: ((bpm_sha1))
 
 stemcells:
 - os: ubuntu-xenial
@@ -33,7 +35,10 @@ instance_groups:
         heap_size: 386m
   instances: 1
   stemcell: xenial
-  azs: [z1]
+  azs:
+  - z1
+  - z2
+  - z3
   vm_type: default
   networks:
   - name: default

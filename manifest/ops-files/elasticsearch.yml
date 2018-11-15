@@ -1,0 +1,46 @@
+---
+- type: replace
+  path: /releases/-
+  value:
+    name: elasticsearch
+    version: ((elasticsearch_version))
+    url: https://github.com/bosh-elastic-stack/elasticsearch-boshrelease/releases/download/((elasticsearch_version))/elasticsearch-boshrelease-((elasticsearch_version)).tgz
+    sha1: ((elasticsearch_sha1))
+
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=zipkin/properties/zipkin?/storage_type
+  value: elasticsearch
+
+- type: replace
+  path: /instance_groups/0:before
+  value:
+    name: elasticsearch-master
+    jobs:
+    - name: java
+      release: openjdk
+    - name: elasticsearch
+      release: elasticsearch
+      properties:
+        elasticsearch:
+          node:
+            allow_master: true
+            allow_data: true
+      provides:
+        elasticsearch:
+          as: elasticsearch-master
+      consumes:
+        elasticsearch:
+          from: elasticsearch-master
+    instances: 1
+    stemcell: xenial
+    update:
+      max_in_flight: 1
+      serial: true
+    azs:
+    - z1
+    - z2
+    - z3
+    vm_type: default
+    persistent_disk_type: default
+    networks: 
+    - name: default

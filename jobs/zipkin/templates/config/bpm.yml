@@ -12,3 +12,19 @@ processes:
   - --server.port=<%= p('zipkin.server_port') %>
   env:
     JAVA_HOME: /var/vcap/packages/java
+<% if_p('zipkin.storage_type') do |storage_type| %>
+    STORAGE_TYPE: <%= storage_type %>
+<% end %>
+<%
+  es_hosts = nil
+  if_link("elasticsearch") { |elasticsearch_link| es_hosts = elasticsearch_link.instances.map {|e| p("elasticsearch.protocol") + "://" + e.address + ":" + p("elasticsearch.port")} }
+  unless es_hosts
+    es_hosts = p("elasticsearch.hosts")
+  end
+%>
+<% if es_hosts != nil then %>
+    ES_HOSTS: <%= es_hosts.join(",") %>
+<% end %>
+<% if_p('elasticsaerch.index') do |es_index| %>
+    ES_INDEX: <%= es_index %>
+<% end %>

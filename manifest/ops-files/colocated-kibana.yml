@@ -1,0 +1,12 @@
+---
+- type: remove
+  path: /instance_groups/name=kibana
+
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/-
+  value:
+    name: kibana
+    release: kibana
+    properties:
+      kibana:
+        memory_limit: 30

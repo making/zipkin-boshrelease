@@ -1,0 +1,15 @@
+---
+zipkin_version:
+zipkin_sha1:
+elasticsearch_version: 0.7.0
+elasticsearch_sha1: 6c02d71bd94fe961692e8d250fcdc7e0ef19eb7c
+kibana_version: 0.7.0
+kibana_sha1: 48331e74f6d7fc0ef45995a1305f72937470b628
+openjdk_version: 8.0.1
+openjdk_sha1: d02566fb6d974de4b60bf44dc21e56422c7da3fd
+bpm_version: 0.13.0
+bpm_sha1: 4b6ebfdaa467c04855528172b099e565d679e0f5
+curator_version: 0.2.0
+curator_sha1: c3e0b3be3f362bacc6bb2f1beed116e00f892190
+cron_version: 1.1.3
+cron_sha1: 69a98ea02ee5e8cc5a9ad2d6cd08ef0a7fa2c292

@@ -8,9 +8,28 @@ templates:
 packages:
 - zipkin
 
+consumes:
+- name: elasticsearch
+  type: elasticsearch
+  optional: true
+
 properties:
   zipkin.server_port:
     description: "sever port"
-    default: 9411
+    default: "9411"
   zipkin.heap_size:
     description: "sets jvm heap sized"
+  zipkin.storage_type:
+    description: "SpanStore implementation. mem and elasticsearch are available."
+  elasticsearch.hosts:
+    description: The list of elasticsearch node hosts
+    default: []
+  elasticsearch.protocol:
+    description: "Protocl of elasticsearch to send elasticsearch requests to (http or https)"
+    default: "http"
+  elasticsearch.port:
+    description: "Port of elasticsearch to send elasticsearch requests to"
+    default: "9200"
+  elasticsaerch.index:
+    description: "Index of elasticsearch where tracing data are stored"
+    default: "zipkin"

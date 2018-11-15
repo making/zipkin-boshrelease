@@ -1,0 +1,6 @@
+---
+- type: replace
+  path: /releases/name=zipkin/version
+  value: latest
+- type: remove
+  path: /releases/name=zipkin/url

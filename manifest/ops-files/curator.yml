@@ -1,0 +1,38 @@
+---
+- type: replace
+  path: /releases/-
+  value:
+    name: curator
+    version: ((curator_version))
+    url: https://github.com/bosh-elastic-stack/curator-boshrelease/releases/download/((curator_version))/curator-boshrelease-((curator_version)).tgz
+    sha1: ((curator_sha1))
+
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/-
+  value: 
+    name: curator
+    release: curator
+    lifecycle: errand
+    properties:
+      curator:
+        actions: |
+          actions:
+            1:
+              action: delete_indices
+              description: >-
+                Delete indices older than 7 days (based on index name), for zipkin:span-
+                prefixed indices. Ignore the error if the filter does not result in an
+                actionable list of indices (ignore_empty_list) and exit cleanly.
+              options:
+                ignore_empty_list: True
+                disable_action: False
+              filters:
+              - filtertype: pattern
+                kind: prefix
+                value: zipkin:span-
+              - filtertype: age
+                source: name
+                direction: older
+                timestring: '%Y-%m-%d'
+                unit: days
+                unit_count: 7

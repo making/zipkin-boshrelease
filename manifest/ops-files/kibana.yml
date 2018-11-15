@@ -1,0 +1,34 @@
+---
+- type: replace
+  path: /releases/-
+  value:
+    name: kibana
+    version: ((kibana_version))
+    url: https://github.com/bosh-elastic-stack/kibana-boshrelease/releases/download/((kibana_version))/kibana-boshrelease-((kibana_version)).tgz
+    sha1: ((kibana_sha1))
+
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: kibana
+    jobs:
+    - name: kibana
+      release: kibana
+      properties:
+        kibana:
+          memory_limit: 30
+      consumes:
+        elasticsearch:
+          from: elasticsearch-master
+    instances: 1
+    stemcell: xenial
+    update:
+      max_in_flight: 1
+      serial: true
+    azs:
+    - z1
+    - z2
+    - z3
+    vm_type: default
+    networks: 
+    - name: default

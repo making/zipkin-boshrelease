@@ -1,0 +1,18 @@
+---
+- type: remove
+  path: /instance_groups/name=elasticsearch-master
+
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/0:before
+  value:
+    name: elasticsearch
+    release: elasticsearch
+    properties:
+      elasticsearch:
+        node:
+          allow_master: true
+          allow_data: true
+
+- type: replace
+  path: /instance_groups/name=zipkin/persistent_disk_type?
+  value: default
