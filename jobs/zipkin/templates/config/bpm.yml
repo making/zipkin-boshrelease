@@ -2,6 +2,7 @@ processes:
 - name: zipkin
   executable: /var/vcap/packages/java/bin/java
   args:
+  - -Djava.security.egd=file:/dev/./urandom
 <% if_p('zipkin.heap_size') do |heap_size| %>
   - -Xms<%= heap_size %>
   - -Xmx<%= heap_size %>
