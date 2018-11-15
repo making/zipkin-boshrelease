@@ -1,0 +1,15 @@
+name: zipkin-boshrelease
+version: 0.1.0
+commit_hash: 42a965a
+uncommitted_changes: true
+jobs:
+- name: zipkin
+  version: 8c51021cfe69cf44cc8519e178828e0fd380b84b
+  fingerprint: 8c51021cfe69cf44cc8519e178828e0fd380b84b
+  sha1: 673007862bae4bd60c6452b90f6a82b0002db858
+packages:
+- name: zipkin
+  version: 8d300b7915123ae2c83be08c59cf6b19c53b9f50
+  fingerprint: 8d300b7915123ae2c83be08c59cf6b19c53b9f50
+  sha1: fcab75ad1d4a8323728376dd7b75de18c5164b42
+  dependencies: []
