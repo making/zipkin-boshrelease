@@ -1,0 +1,16 @@
+---
+name: zipkin
+
+templates:
+  bin/post-start: bin/post-start
+  config/bpm.yml: config/bpm.yml
+
+packages:
+- zipkin
+
+properties:
+  zipkin.server_port:
+    description: "sever port"
+    default: 9411
+  zipkin.heap_size:
+    description: "sets jvm heap sized"

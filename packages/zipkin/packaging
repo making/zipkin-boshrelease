@@ -1,0 +1,3 @@
+set -e
+
+cp -a ./zipkin/zipkin-server-*.jar $BOSH_INSTALL_TARGET/zipkin-server.jar

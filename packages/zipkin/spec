@@ -1,0 +1,7 @@
+---
+name: zipkin
+
+dependencies: []
+
+files:
+- zipkin/zipkin-server-2.11.8-exec.jar

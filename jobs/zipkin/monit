@@ -1,0 +1,5 @@
+check process zipkin
+  with pidfile /var/vcap/sys/run/bpm/zipkin/zipkin.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start zipkin"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop zipkin"
+  group vcap

@@ -1,0 +1,45 @@
+---
+name: zipkin
+
+releases:
+- name: zipkin
+  version: latest
+- name: openjdk
+  version: 8.0.1
+  url: https://github.com/making/openjdk-boshrelease/releases/download/8.0.1/openjdk-boshrelease-8.0.1.tgz
+  sha1: d02566fb6d974de4b60bf44dc21e56422c7da3fd
+- name: bpm
+  version: 0.13.0
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bpm-release?v=0.13.0
+  sha1: 4b6ebfdaa467c04855528172b099e565d679e0f5
+
+stemcells:
+- os: ubuntu-xenial
+  alias: xenial
+  version: latest
+
+instance_groups:
+- name: zipkin
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: java
+    release: openjdk
+  - name: zipkin
+    release: zipkin
+    properties:
+      zipkin:
+        server_port: 9411
+        heap_size: 386m
+  instances: 1
+  stemcell: xenial
+  azs: [z1]
+  vm_type: default
+  networks:
+  - name: default
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000

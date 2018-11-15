@@ -1,0 +1,13 @@
+processes:
+- name: zipkin
+  executable: /var/vcap/packages/java/bin/java
+  args:
+<% if_p('zipkin.heap_size') do |heap_size| %>
+  - -Xms<%= heap_size %>
+  - -Xmx<%= heap_size %>
+<% end %>
+  - -jar
+  - /var/vcap/packages/zipkin/zipkin-server.jar
+  - --server.port=<%= p('zipkin.server_port') %>
+  env:
+    JAVA_HOME: /var/vcap/packages/java
