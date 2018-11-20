@@ -1,4 +1,4 @@
-name: zipkin-boshrelease
+name: zipkin
 blobstore:
   provider: s3
   options:
