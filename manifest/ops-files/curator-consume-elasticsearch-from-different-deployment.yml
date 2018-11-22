@@ -1,0 +1,7 @@
+---
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=curator/consumes?
+  value: 
+    elasticsearch:
+      from: ((elasticsearch-from))
+      deployment: ((elasticsearch-deployment))
