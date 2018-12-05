@@ -1,0 +1,317 @@
+---
+resource_types:
+- name: maven
+  type: docker-image
+  source:
+    repository: nulldriver/maven-resource
+    tag: latest
+
+resources:
+- name: utils
+  type: git
+  source:
+    uri: https://github.com/making/ci-utils.git
+    branch: master
+- name: repo
+  type: git
+  source:
+    uri: git@github.com:making/zipkin-boshrelease.git
+    branch: master
+    private_key: ((github-private-key))
+    ignore_paths:
+    - ci/*
+    - deployment/*
+    - README.md
+- name: repo-version
+  type: semver
+  source:
+    uri: git@github.com:making/zipkin-boshrelease.git
+    branch: version
+    private_key: ((github-private-key))
+    file: version
+    driver: git
+- name: gh-release
+  type: github-release
+  source:
+    user: making
+    repository: zipkin-boshrelease
+    access_token: ((github-access-token))
+- name: zipkin
+  type: maven
+  check_every: 30m
+  source:
+    url: https://repo1.maven.org/maven2
+    artifact: io.zipkin.java:zipkin-server:jar:exec
+
+jobs:
+- name: update-zipkin
+  serial: true
+  plan:
+  - aggregate:
+    - get: zipkin
+      trigger: true
+    - get: repo
+    - get: utils
+  - task: update-zipkin
+    params:
+      GIT_EMAIL: ((git-email))
+      GIT_NAME: ((git-name))
+      GIT_SSH_KEY: ((github-private-key))
+      GITHUB_API_TOKEN: ((github-access-token))
+      S3_ACCESS_KEY_ID: ((s3-access-key-id))
+      S3_SECRET_ACCESS_KEY: ((s3-secret-access-key))
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: bosh/main-bosh-docker
+      inputs:
+      - name: zipkin
+      - name: repo
+      - name: utils
+      outputs:
+      - name: updated-repo
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          set -e
+          shopt -s dotglob
+          source utils/scripts/generate-pr.sh
+
+          CURRENT_VERSION=`grep ZIPKIN_VERSION= repo/add-blobs.sh | tr -d 'ZIPKIN_VERSION='`
+          NEW_VERSION=`basename zipkin/zipkin-server-*-exec.jar | sed 's/zipkin-server-//g' | sed 's/-exec.jar//g'`
+          
+          echo "Current: $CURRENT_VERSION"
+          echo "New    : $NEW_VERSION"
+
+          cd repo
+          sed -i.swp "s/$CURRENT_VERSION/$NEW_VERSION/g" `grep -riIl $CURRENT_VERSION packages/` add-blobs.sh
+          rm -f `find . -name '*.swp'`
+          bosh add-blob ../zipkin/zipkin-server-${NEW_VERSION}-exec.jar zipkin/zipkin-server-${NEW_VERSION}-exec.jar          
+          ./add-blobs.sh
+
+          cat <<EOF > config/private.yml
+          ---
+          blobstore:
+            options:
+              access_key_id: ${S3_ACCESS_KEY_ID}
+              secret_access_key: ${S3_SECRET_ACCESS_KEY}
+          EOF
+
+          bosh upload-blobs
+          sed -i.swp "/$CURRENT_VERSION/,/sha/ d" config/blobs.yml
+
+          git diff | cat
+
+          cp -r ./* ../updated-repo
+          cd ../updated-repo
+
+          generate_pull_request "making-bot" "zipkin" "${NEW_VERSION}" "making/zipkin-boshrelease" "master"
+
+
+- name: bosh-deploy-dev-in-exsiting-env
+  serial: true
+  plan:
+  - aggregate:
+    - get: repo
+      trigger: true
+  - task: bosh-create-release
+    params:
+      S3_ACCESS_KEY_ID: ((s3-access-key-id))
+      S3_SECRET_ACCESS_KEY: ((s3-secret-access-key))
+    config:
+      <<: *BOSH_CREATE_RELEASE
+  - task: bosh-deploy
+    params:
+      RELEASE_NAME: zipkin
+      IS_DOCKER: false
+      <<: *BOSH
+    config:
+      <<: *BOSH_DEPLOY
+- name: ship-it
+  serial: true
+  plan:
+  - aggregate:
+    - get: repo
+    - get: repo-version
+  - task: create-release
+    params:
+      <<: *BOSH
+      GIT_EMAIL: ((git-email))
+      GIT_NAME: ((git-name))
+      S3_ACCESS_KEY_ID: ((s3-access-key-id))
+      S3_SECRET_ACCESS_KEY: ((s3-secret-access-key))
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: bosh/main-bosh-docker
+      inputs:
+      - name: repo
+      - name: repo-version
+      outputs:
+      - name: releases
+      - name: updated-repo
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          set -e
+          cd repo
+          shopt -s dotglob
+          cp -r ./* ../updated-repo
+          VERSION=`cat ../repo-version/number`
+          TARBALL=zipkin-boshrelease-${VERSION}.tgz
+
+          cat <<EOF > config/private.yml
+          ---
+          blobstore:
+            options:
+              access_key_id: ${S3_ACCESS_KEY_ID}
+              secret_access_key: ${S3_SECRET_ACCESS_KEY}
+          EOF
+          mkdir -p src
+          bosh create-release --force --version=${VERSION} --final --tarball=../releases/${TARBALL}
+          SHA1=`sha1sum ../releases/${TARBALL} | awk '{print $1}'`
+          mkdir -p .sha1
+          echo ${SHA1} > .sha1/${VERSION}
+          cp -r ./* ../updated-repo
+          cd ../updated-repo
+          git config --global user.email "${GIT_EMAIL}"
+          git config --global user.name "${GIT_NAME}"
+          git add -A
+          git commit -m "Release ${VERSION}"
+          # Release Note
+          cat <<EOF > ../releases/note.md
+          ## Deployment
+          \`\`\` yaml
+          # manifest.yml
+          ---
+          name: zipkin
+          releases:
+          - name: zipkin
+            version: ${VERSION}
+            url: https://github.com/making/zipkin-boshrelease/releases/download/${VERSION}/${TARBALL}
+            sha1: ${SHA1}
+          \`\`\`
+          EOF
+  - put: repo
+    params:
+      repository: updated-repo
+      tag: repo-version/number
+  - put: gh-release
+    params:
+      name: repo-version/number
+      tag: repo-version/number
+      body: releases/note.md
+      globs:
+      - releases/*.tgz
+
+########################################
+
+- name: bump-to-next-patch-version
+  plan:
+  - aggregate:
+    - get: repo
+      trigger: true
+      passed:
+      - ship-it
+    - get: repo-version
+      params:
+        bump: patch
+  - put: repo-version
+    params:
+      file: repo-version/number
+
+- name: bump-to-next-minor-version
+  plan:
+  - aggregate:
+    - get: repo-version
+      params:
+        bump: minor
+  - put: repo-version
+    params:
+      file: repo-version/number
+
+- name: bump-to-next-majar-version
+  plan:
+  - aggregate:
+    - get: repo-version
+      params:
+        bump: majar
+  - put: repo-version
+    params:
+      file: repo-version/number
+
+params:
+  bosh: &BOSH
+    BOSH_CLIENT: ((bosh-client))
+    BOSH_ENVIRONMENT: ((bosh-environment))
+    BOSH_CLIENT_SECRET: ((bosh-client-secret))
+    BOSH_CA_CERT: ((bosh-ca-cert))
+tasks:
+  bosh-create-release: &BOSH_CREATE_RELEASE
+    platform: linux
+    image_resource:
+      type: docker-image
+      source:
+        repository: bosh/main-bosh-docker
+    inputs:
+    - name: repo
+    outputs:
+    - name: releases
+    run:
+      path: bash
+      args: 
+      - -c
+      - |
+        set -e
+        cd repo
+        mkdir -p src
+        bosh create-release --name=zipkin --force --timestamp-version --tarball=../releases/zipkin-boshrelease.tgz
+  bosh-deploy: &BOSH_DEPLOY
+    platform: linux
+    image_resource:
+      type: docker-image
+      source:
+        repository: bosh/main-bosh-docker
+    inputs:
+    - name: repo
+    - name: releases
+    caches:
+    - path: repo/.bosh
+    run:
+      path: bash
+      args: 
+      - -c
+      - |
+        set -e
+        echo "======"
+        VM_TYPE=small
+        bosh env
+        bosh upload-release releases/*.tgz
+        cd repo
+        cat <<EOF > ops.yml
+        - type: remove
+          path: /instance_groups/name=${RELEASE_NAME}/networks/0/static_ips?
+        - type: replace
+          path: /instance_groups/name=${RELEASE_NAME}/vm_type
+          value: ${VM_TYPE}
+        EOF
+        cat manifest/zipkin.yml
+        bosh -n deploy -d ${RELEASE_NAME} \
+             manifest/zipkin.yml \
+             -l manifest/versions.yml \
+             -o manifest/ops-files/dev.yml \
+             -o ops.yml \
+             --no-redact
+        bosh vms -d ${RELEASE_NAME}
+        ip=`bosh vms -d ${RELEASE_NAME} | grep ${RELEASE_NAME} | awk '{print $4}'`
+        echo ${ip}
+        bosh -n delete-deployment -d ${RELEASE_NAME}
+        bosh -n clean-up --all
