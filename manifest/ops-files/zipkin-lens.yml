@@ -1,0 +1,4 @@
+---
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=zipkin/properties/zipkin/use_lens?
+  value: true

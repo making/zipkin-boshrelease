@@ -31,6 +31,9 @@ properties:
     description: "sets jvm heap sized"
   zipkin.storage_type:
     description: "SpanStore implementation. mem and elasticsearch are available."
+  zipkin.use_lens:
+    description: "Whether to use Zipkin Lens instead of old UI"
+    default: false
   elasticsearch.hosts:
     description: The list of elasticsearch node hosts
     default: []
