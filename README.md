@@ -134,6 +134,14 @@ then
 bosh run-errand -d zipkin aggregate-dependencies
 ```
 
+### Enable Zipkin Lens (Experimental)
+
+```
+...
+-o manifest/ops-files/zipkin-lens.yml
+... 
+```
+
 ## Development
 
 ```
