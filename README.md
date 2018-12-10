@@ -101,6 +101,33 @@ bosh -d zipkin deploy manifest/zipkin.yml \
 
 Elasticseach and Kibana are colocated at the Zipkin server.
 
+### Enable aggregate-dependencies errand
+
+Currently only the case is supported which uses Elasticsearch and consumes it as a bosh link.
+
+```
+bosh -d zipkin deploy manifest/zipkin.yml \
+  -l manifest/versions.yml \
+  -o manifest/ops-files/elasticsearch.yml \
+  -o manifest/ops-files/aggregate-dependencies-elasticsearch.yml \
+  -v elasticsearch-from=elasticsearch-master \
+  -v elasticsearch-deployment=zipkin \
+  --no-redact
+```
+
+or
+
+```
+bosh -d zipkin deploy manifest/zipkin.yml \
+  -l manifest/versions.yml \
+  -o manifest/ops-files/consume-elasticsearch-from-different-deployment.yml \
+  -o manifest/ops-files/aggregate-dependencies-elasticsearch.yml \
+  -v elasticsearch-from=elasticsearch-master \
+  -v elasticsearch-deployment=elastic-stack \
+  --no-redact
+```
+
+
 ## Development
 
 ```

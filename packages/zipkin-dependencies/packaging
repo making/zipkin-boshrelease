@@ -1,0 +1,3 @@
+set -e
+
+cp -a ./zipkin-dependencies/zipkin-dependencies-*.jar $BOSH_INSTALL_TARGET/zipkin-dependencies.jar

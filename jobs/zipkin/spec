@@ -8,6 +8,16 @@ templates:
 packages:
 - zipkin
 
+provides:
+- name: zipkin
+  type: zipkin
+  properties:
+  - zipkin.server_port
+  - zipkin.storage_type
+  - elasticsearch.protocol
+  - elasticsearch.port
+  - elasticsaerch.index
+
 consumes:
 - name: elasticsearch
   type: elasticsearch

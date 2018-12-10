@@ -1,0 +1,7 @@
+---
+name: zipkin-dependencies
+
+dependencies: []
+
+files:
+- zipkin-dependencies/zipkin-dependencies-2.0.4.jar 

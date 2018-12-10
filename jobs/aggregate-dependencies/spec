@@ -1,0 +1,20 @@
+---
+name: aggregate-dependencies
+
+templates:
+  bin/run.sh: bin/run
+
+packages:
+- zipkin-dependencies
+
+consumes:
+- name: zipkin
+  type: zipkin
+- name: elasticsearch
+  type: elasticsearch
+  optional: true
+
+properties:
+  zipkin_dependencies.days_to_look_back:
+    description: "Days to look back UTC. This property is passed to `date -u -d '<days_to_look_back>' +%F`."
+    example: "1 day ago"
