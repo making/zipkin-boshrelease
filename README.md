@@ -127,6 +127,12 @@ bosh -d zipkin deploy manifest/zipkin.yml \
   --no-redact
 ```
 
+then
+
+
+```
+bosh run-errand -d zipkin aggregate-dependencies
+```
 
 ## Development
 
