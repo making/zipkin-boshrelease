@@ -5,8 +5,8 @@ elasticsearch_version: 0.8.1
 elasticsearch_sha1: dde1415cbbbfa40724821a67d1fbc2c253dfe95e
 kibana_version: 0.7.1
 kibana_sha1: 5efc89f349837a9f5d7281df38ecf0ddb675c3ad
-openjdk_version: 11.0.1
-openjdk_sha1: 47dc27c34e1d471aac96f6cb7701c8979d9570bd
+openjdk_version: 8.0.1
+openjdk_sha1: d02566fb6d974de4b60bf44dc21e56422c7da3fd
 bpm_version: 0.13.0
 bpm_sha1: 4b6ebfdaa467c04855528172b099e565d679e0f5
 curator_version: 0.2.0
