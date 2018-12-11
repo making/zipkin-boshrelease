@@ -8,6 +8,4 @@
     name: aggregate-dependencies
     release: zipkin
     lifecycle: errand
-    properties:
-      zipkin_dependencies:
-        days_to_look_back: "2 days ago"
+    properties: {}
