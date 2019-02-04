@@ -1,12 +1,12 @@
 ---
-zipkin_version: 0.3.2
-zipkin_sha1: 2bf0b894d93a64226df51a748179360a939136a4
+zipkin_version: 0.3.3
+zipkin_sha1: 36cc1df57b67768451fd271f4206dc0ea09913ce
 elasticsearch_version: 0.8.1
 elasticsearch_sha1: dde1415cbbbfa40724821a67d1fbc2c253dfe95e
 kibana_version: 0.7.1
 kibana_sha1: 5efc89f349837a9f5d7281df38ecf0ddb675c3ad
-openjdk_version: 8.0.1
-openjdk_sha1: d02566fb6d974de4b60bf44dc21e56422c7da3fd
+openjdk_version: 8.0.2
+openjdk_sha1: e76b73d2560d143b155e958aa06a2e266e261464
 bpm_version: 0.13.0
 bpm_sha1: 4b6ebfdaa467c04855528172b099e565d679e0f5
 curator_version: 0.2.0
