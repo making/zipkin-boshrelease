@@ -18,3 +18,5 @@ properties:
   zipkin_dependencies.days_to_look_back:
     description: "Days to look back UTC. This property is passed to `date -u -d '<days_to_look_back>' +%F`."
     example: "1 day ago"
+  zipkin_dependencies.max_heap_size:
+    description: "Max heap size to execute the spark job"

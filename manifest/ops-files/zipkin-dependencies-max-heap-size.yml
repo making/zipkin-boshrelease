@@ -1,0 +1,3 @@
+- type: replace
+  path: /instance_groups/name=zipkin/jobs/name=aggregate-dependencies/properties/zipkin_dependencies?/max_heap_size?
+  value: ((zipkin_dependencies_heap_size))

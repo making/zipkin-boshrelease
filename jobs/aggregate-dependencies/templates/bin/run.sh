@@ -17,6 +17,11 @@ export ES_INDEX=<%= link("zipkin").p("elasticsaerch.index") %>
   end
 %>
 
-java -jar /var/vcap/packages/zipkin-dependencies/zipkin-dependencies.jar \
+JAVA_OPTS=
+<% if_p('zipkin_dependencies.max_heap_size') do |max_heap_size| %>
+JAVA_OPTS="${JAVA_OPTS} -Xmx<%= max_heap_size %>"
+<% end %>
+
+java ${JAVA_OPTS} -jar /var/vcap/packages/zipkin-dependencies/zipkin-dependencies.jar \
 <% if_p('zipkin_dependencies.days_to_look_back') do |days_to_look_back| %>  `date -u -d '<%= days_to_look_back %>' +%F` \<% end %>
 
