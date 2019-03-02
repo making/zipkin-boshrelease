@@ -10,9 +10,6 @@ processes:
   - -jar
   - /var/vcap/packages/zipkin/zipkin-server.jar
   - --server.port=<%= p('zipkin.server_port') %>
-<% if p('zipkin.use_lens') then %>
-  - --zipkin.ui.source-root=classpath:zipkin-lens
-<% end %>
   env:
     JAVA_HOME: /var/vcap/packages/java
 <% if_p('zipkin.storage_type') do |storage_type| %>
