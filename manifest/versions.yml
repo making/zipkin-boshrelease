@@ -1,6 +1,6 @@
 ---
-zipkin_version: 0.3.3
-zipkin_sha1: 36cc1df57b67768451fd271f4206dc0ea09913ce
+zipkin_version: 0.4.0
+zipkin_sha1: fa21d6611c7873a14cace2ceb61c70048fc4cc52
 elasticsearch_version: 0.12.0
 elasticsearch_sha1: a8a8ac570a541ed6606d5b2de90decaa1c978bf0
 kibana_version: 0.7.3
