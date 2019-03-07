@@ -8,7 +8,7 @@ mkdir -p .downloads
 cd .downloads
 
 
-ZIPKIN_VERSION=2.12.4
+ZIPKIN_VERSION=2.12.5
 ZIPKIN_DEPENDENCIES_VERSION=2.0.6
 
 # if [ ! -f ${DIR}/blobs/zipkin/zipkin-server-${ZIPKIN_VERSION}-exec.jar ];then
