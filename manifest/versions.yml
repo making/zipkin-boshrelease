@@ -1,6 +1,6 @@
 ---
-zipkin_version: 0.4.2
-zipkin_sha1: 38998e6bdeb3afdce65d3e24dcce4e7f85610685
+zipkin_version: 0.4.3
+zipkin_sha1: bbb6302c831cfa3380a5725ead606ef90e864899
 openjdk_version: 8.0.2
 openjdk_sha1: e76b73d2560d143b155e958aa06a2e266e261464
 bpm_version: 1.0.4
