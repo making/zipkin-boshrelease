@@ -1,0 +1,24 @@
+name: zipkin
+version: 0.4.3
+commit_hash: 62d6f29
+uncommitted_changes: false
+jobs:
+- name: aggregate-dependencies
+  version: 0c08ae931ca435f20754cf54a771c905cd8069ebd9266df6f2aa2975a68c0314
+  fingerprint: 0c08ae931ca435f20754cf54a771c905cd8069ebd9266df6f2aa2975a68c0314
+  sha1: sha256:fb819726b28a98813665e3569188dee7b2fdd03ad6957fe51676858acd54f547
+- name: zipkin
+  version: e2b92b63551239aeabc38237b92fa3c0c923799f3779925bf5b496bc3ee286e3
+  fingerprint: e2b92b63551239aeabc38237b92fa3c0c923799f3779925bf5b496bc3ee286e3
+  sha1: sha256:1715e82c459e62fcc1313340406c03e5afe8e1d951187f2241110b75dc7da75d
+packages:
+- name: zipkin
+  version: 6b75ffcfdb63bfc72b69e811cf3f049f66cd1d80ba57fc17e6c97ec9f3cf9392
+  fingerprint: 6b75ffcfdb63bfc72b69e811cf3f049f66cd1d80ba57fc17e6c97ec9f3cf9392
+  sha1: sha256:1bd2cfffb63525617142673c5b27e7b1b55509a57fed2c8fb5c6b1feafb8f23a
+  dependencies: []
+- name: zipkin-dependencies
+  version: f2c6bc64ca44b33368e26c548d66294113c40c74db2e5e882e9b2f7e607a6f25
+  fingerprint: f2c6bc64ca44b33368e26c548d66294113c40c74db2e5e882e9b2f7e607a6f25
+  sha1: sha256:8ced9c0fddfe6e5b580e0f22f11cc326c97d2c86924d7d03cf2f56c1895450bc
+  dependencies: []
