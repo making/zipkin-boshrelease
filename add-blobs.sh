@@ -9,7 +9,7 @@ cd .downloads
 
 
 ZIPKIN_VERSION=2.15.0
-ZIPKIN_DEPENDENCIES_VERSION=2.1.0
+ZIPKIN_DEPENDENCIES_VERSION=2.3.1
 
 # if [ ! -f ${DIR}/blobs/zipkin/zipkin-server-${ZIPKIN_VERSION}-exec.jar ];then
 #     curl -L -O -J https://repo1.maven.org/maven2/io/zipkin/java/zipkin-server/${ZIPKIN_VERSION}/zipkin-server-${ZIPKIN_VERSION}-exec.jar
