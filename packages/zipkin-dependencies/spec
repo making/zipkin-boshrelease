@@ -4,4 +4,4 @@ name: zipkin-dependencies
 dependencies: []
 
 files:
-- zipkin-dependencies/zipkin-dependencies-2.3.1.jar 
+- zipkin-dependencies/zipkin-dependencies-2.3.2.jar 
