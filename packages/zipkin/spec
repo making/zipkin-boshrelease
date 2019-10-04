@@ -4,4 +4,4 @@ name: zipkin
 dependencies: []
 
 files:
-- zipkin/zipkin-server-2.17.0-exec.jar
+- zipkin/zipkin-server-2.17.1-exec.jar
