@@ -43,3 +43,7 @@ properties:
   elasticsaerch.index:
     description: "Index of elasticsearch where tracing data are stored"
     default: "zipkin"
+  elasticsearch.username:
+    description: "Elasticsearch basic username"
+  elasticsearch.password:
+    description: "Elasticsearch basic password"
