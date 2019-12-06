@@ -1,7 +1,7 @@
-zipkin-dependencies/zipkin-dependencies-2.4.0.jar:
-  size: 100728439
-  object_id: 9f854e54-9e8f-4d8b-7d2c-eddc79655a8b
-  sha: sha256:93bb81804665b6e334106b9802b33cd498c0243de8bcf7f6b64fd13641d4407b
+zipkin-dependencies/zipkin-dependencies-2.4.1.jar:
+  size: 100728451
+  object_id: 8ff754a1-f2bc-4d0b-7e39-68a44cf57e37
+  sha: sha256:bcf01542ef8332dd2c3b7285882f31c5b5bbdd43a8e473c4128b54aa79ed924c
 zipkin/zipkin-server-2.19.2-exec.jar:
   size: 56355959
   object_id: 14548f30-8d57-4228-5afe-7c1a695a5cce
